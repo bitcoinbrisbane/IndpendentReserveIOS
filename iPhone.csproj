@@ -122,6 +122,8 @@
       <DependentUpon>DetailViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\OrderBookResponse.cs" />
+    <Compile Include="Models\BuyOrder.cs" />
+    <Compile Include="Models\SellOrder.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>

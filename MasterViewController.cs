@@ -21,10 +21,12 @@ namespace iPhone
 
 		void AddNewItem (object sender, EventArgs args)
 		{
-			dataSource.Objects.Insert (0, DateTime.Now);
+			//dataSource.Objects.Insert (0, DateTime.Now);
 
-			using (var indexPath = NSIndexPath.FromRowSection (0, 0))
-				TableView.InsertRows (new NSIndexPath[] { indexPath }, UITableViewRowAnimation.Automatic);
+			dataSource.LoadData ();
+
+			//using (var indexPath = NSIndexPath.FromRowSection (0, 0))
+			//	TableView.InsertRows (new NSIndexPath[] { indexPath }, UITableViewRowAnimation.Automatic);
 		}
 
 		public override void DidReceiveMemoryWarning ()
@@ -55,14 +57,21 @@ namespace iPhone
 			readonly List<object> objects = new List<object> ();
 			readonly MasterViewController controller;
 
+			private Models.OrderBookResponse orderBookResponse = new iPhone.Models.OrderBookResponse ();
+
 			public DataSource (MasterViewController controller)
 			{
 				this.controller = controller;
 			}
 
-			public IList<object> Objects 
+			public IList<object> Objectsx
 			{
 				get { return objects; }
+			}
+
+			public IList<Models.BuyOrder> Objects 
+			{
+				get { return orderBookResponse.BuyOrders; }
 			}
 
 			public async void LoadData()
@@ -72,7 +81,7 @@ namespace iPhone
 				var task = await client.GetAsync(url);
 				var jsonString = await task.Content.ReadAsStringAsync();
 
-				iPhone.Models.OrderBookResponse model = JsonConvert.DeserializeObject<iPhone.Models.OrderBookResponse>(jsonString);
+				this.orderBookResponse = JsonConvert.DeserializeObject<iPhone.Models.OrderBookResponse>(jsonString);
 			}
 
 			// Customize the number of sections in the table view.
